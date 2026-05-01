@@ -1,9 +1,16 @@
-FROM richarvey/php-fpm-with-nginx:latest
+FROM php:8.2-fpm-alpine
 
-COPY . /var/www/html
+WORKDIR /var/www/html
+COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+RUN apk add --no-cache \
+    nginx \
+    curl \
+    git && \
+    docker-php-ext-install pdo pdo_mysql && \
+    composer install --no-dev --optimize-autoloader
 
-ENV SKIP_COMPOSER 1
-ENV WEBROOT /var/www/html/public
-ENV PHP_ERRORS_STDERR 1
+ENV WEBROOT=/var/www/html/public
+
+EXPOSE 80
+CMD ["sh", "-c", "php artisan migrate --force; php-fpm -D && nginx -g 'daemon off;'"]
