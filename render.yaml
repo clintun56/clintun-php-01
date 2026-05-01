@@ -2,10 +2,11 @@ services:
   - type: web
     name: clintun-portfolio
     runtime: docker
-    buildCommand: docker build -t portfolio .
-    startCommand: docker run -p 80:80 portfolio
     envVars:
       - key: APP_NAME
         value: CliNTun
       - key: APP_ENV
         value: production
+      - key: APP_DEBUG
+        value: 'false'
+    postDeployCommand: php artisan migrate --force
