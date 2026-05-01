@@ -536,6 +536,29 @@
                         <li class="nav-item"><a class="nav-link" href="#skills">ทักษะ</a></li>
                         <li class="nav-item"><a class="nav-link" href="#services">บริการ</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">ติดต่อ</a></li>
+                        
+                        @if (session('user'))
+                            <li class="nav-item" style="margin-left: 20px; display: flex; align-items: center; gap: 15px;">
+                                <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(240, 147, 251, 0.15) 100%); padding: 8px 16px; border-radius: 20px; border: 1.5px solid rgba(102, 126, 234, 0.3); transition: all 0.3s ease;">
+                                    <i class="fas fa-user-circle" style="color: #667eea; font-size: 1.2rem;"></i>
+                                    <span style="color: white; font-weight: 600; font-size: 0.9rem;">
+                                        {{ session('user')['name'] }}
+                                    </span>
+                                </div>
+                                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-outline-light" style="border: 2px solid rgba(255,255,255,0.5); transition: all 0.3s ease; font-weight: 600; padding: 6px 14px;">
+                                        <i class="fas fa-sign-out-alt"></i> ออก
+                                    </button>
+                                </form>
+                            </li>
+                        @else
+                            <li class="nav-item" style="margin-left: 20px;">
+                                <a href="{{ route('google.login') }}" class="btn btn-sm btn-primary-custom" style="color: white;">
+                                    <i class="fab fa-google"></i> เข้าสู่ระบบด้วย Google
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>

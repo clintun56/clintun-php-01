@@ -13,3 +13,7 @@ Route::get('/', function () {
     }
     return view('welcome', ['dbConnected' => $dbConnected]);
 });
+
+Route::get('/auth/google', [App\Http\Controllers\AuthController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('/auth/google/callback', [App\Http\Controllers\AuthController::class, 'handleGoogleCallback']);
+Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
