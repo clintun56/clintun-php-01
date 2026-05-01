@@ -1,57 +1,34 @@
-FROM php:8.5-fpm-alpine
+FROM php:8.2-fpm
 
-WORKDIR /var/www/html
-
-# ติดตั้ง system dependencies
-RUN apk add --no-cache \
-    build-base \
-    git \
-    curl \
+# ติดตั้ง System Dependencies ที่จำเป็น
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libxml2-dev \
     zip \
     unzip \
-    sqlite \
-    oniguruma-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    postgresql-client
-
-# ติดตั้ง PHP extensions ที่จำเป็น
-RUN docker-php-ext-configure gd \
-    --with-freetype \
-    --with-jpeg && \
-    docker-php-ext-install \
-    pdo \
-    pdo_mysql \
-    pdo_sqlite \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath \
-    gd \
-    xml \
-    curl
-
-# ล้าง build dependencies เพื่อลดขนาด image
-RUN apk del --no-cache build-base oniguruma-dev libpng-dev libjpeg-turbo-dev freetype-dev
+    git \
+    curl \
+    nginx \
+    libzip-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # ติดตั้ง Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy project files
+WORKDIR /var/www/html
 COPY . .
 
-# ติดตั้ง PHP dependencies
-RUN composer install --no-dev --optimize-autoloader && \
-    composer dump-autoload
+# ติดตั้ง Dependencies ของ Laravel
+RUN composer install --no-dev --optimize-autoloader
 
-# ตั้งค่า permissions
-RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html && \
-    chmod -R 777 storage bootstrap/cache
+# ตั้งค่าสิทธิ์การเข้าถึงไฟล์
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose port
-EXPOSE 9000
+# พอร์ตที่ Render ใช้
+EXPOSE 80
 
-# Run PHP-FPM
-CMD ["php-fpm"]
+# สั่งรัน Migration และเริ่มระบบ
+CMD ["sh", "-c", "php artisan migrate --force && php-fpm -D && nginx -g 'daemon off;'"]
