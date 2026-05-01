@@ -4,6 +4,7 @@ WORKDIR /var/www/html
 
 # ติดตั้ง system dependencies
 RUN apk add --no-cache \
+    build-base \
     git \
     curl \
     zip \
@@ -16,7 +17,10 @@ RUN apk add --no-cache \
     postgresql-client
 
 # ติดตั้ง PHP extensions ที่จำเป็น
-RUN docker-php-ext-install \
+RUN docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg && \
+    docker-php-ext-install \
     pdo \
     pdo_mysql \
     pdo_sqlite \
@@ -28,10 +32,8 @@ RUN docker-php-ext-install \
     xml \
     curl
 
-# ติดตั้ง GD library ให้เสร็จ
-RUN docker-php-ext-configure gd \
-    --with-freetype \
-    --with-jpeg
+# ล้าง build dependencies เพื่อลดขนาด image
+RUN apk del --no-cache build-base oniguruma-dev libpng-dev libjpeg-turbo-dev freetype-dev
 
 # ติดตั้ง Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -47,10 +49,6 @@ RUN composer install --no-dev --optimize-autoloader && \
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html && \
     chmod -R 777 storage bootstrap/cache
-
-# ล้าง cache
-RUN rm -rf /var/cache/apk/* && \
-    rm -rf /var/lib/apt/lists/*
 
 # Expose port
 EXPOSE 9000

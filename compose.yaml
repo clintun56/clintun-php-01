@@ -53,19 +53,19 @@ services:
         ports:
             - '${FORWARD_PHPMYADMIN_PORT:-8080}:80'
         environment:
-            PMA_HOST: 'mysql'
-            PMA_PORT: 3306
+            PMA_HOST: '${DB_HOST}'
+            PMA_PORT: '${DB_PORT}'
             PMA_USER: '${DB_USERNAME}'
             PMA_PASSWORD: '${DB_PASSWORD}'
-            PMA_ROOT_PASSWORD: '${DB_PASSWORD}'
+            PMA_DB: '${DB_DATABASE}'
+            PMA_ALLOW_ARBITRARY_SERVER: 'true'
+            PMA_ALLOW_USER_PREFERENCES: 'false'
             UPLOAD_LIMIT: 300M
             MAX_EXECUTION_TIME: 600
         volumes:
             - './storage/phpmyadmin:/sessions'
         networks:
             - sail
-        depends_on:
-            - mysql
         restart: unless-stopped
 networks:
     sail:
