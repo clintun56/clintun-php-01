@@ -1,34 +1,40 @@
-FROM php:8.2-fpm
+# ใช้ PHP 8.5 FPM บน Alpine Linux
+FROM php:8.5-fpm-alpine
 
-# ติดตั้ง System Dependencies ที่จำเป็น
-RUN apt-get update && apt-get install -y \
+# 1. ติดตั้ง System Dependencies สำหรับ Alpine
+# build-base: สำหรับ compile extensions, libpng-dev/libjpeg-turbo-dev: สำหรับ GD
+RUN apk add --no-cache \
+    build-base \
     libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libonig-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    libzip-dev \
+    oniguruma-dev \
     libxml2-dev \
+    icu-dev \
     zip \
     unzip \
     git \
     curl \
-    nginx \
-    libzip-dev \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+    nginx
 
-# ติดตั้ง Composer
+# 2. ติดตั้ง PHP Extensions สำหรับ Laravel
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd intl zip
+
+# 3. ติดตั้ง Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 COPY . .
 
-# ติดตั้ง Dependencies ของ Laravel
-RUN composer install --no-dev --optimize-autoloader
+# 4. ติดตั้ง Laravel Dependencies
+RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
-# ตั้งค่าสิทธิ์การเข้าถึงไฟล์
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# 5. ตั้งค่า Permissions สำหรับ Alpine (User 82 คือ www-data)
+RUN chown -R 82:82 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# พอร์ตที่ Render ใช้
 EXPOSE 80
 
-# สั่งรัน Migration และเริ่มระบบ
+# 6. รัน Migration และเริ่มระบบ
 CMD ["sh", "-c", "php artisan migrate --force && php-fpm -D && nginx -g 'daemon off;'"]
