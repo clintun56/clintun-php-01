@@ -2,8 +2,8 @@ FROM php:8.5-fpm-alpine
 
 WORKDIR /var/www/html
 
-# 1. ติดตั้ง build dependencies
-RUN apk add --no-cache build-base \
+# 1. ติดตั้ง build dependencies + curl
+RUN apk add --no-cache curl build-base \
     libpng-dev libjpeg-turbo-dev freetype-dev \
     libzip-dev oniguruma-dev
 
