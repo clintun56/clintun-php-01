@@ -1,26 +1,17 @@
 FROM php:8.2-fpm-alpine
 
-WORKDIR /var/www/html
+# 1. เพิ่ม build dependencies ก่อน
+RUN apk add --no-cache build-base \
+    libpng-dev libjpeg-turbo-dev freetype-dev \
+    libzip-dev oniguruma-dev
 
-# Install system dependencies
-RUN apk add --no-cache \
-    nginx \
-    curl \
-    git \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    libzip-dev
+# 2. ติดตั้ง extensions
+RUN docker-php-ext-install pdo pdo_mysql mbstring \
+    exif pcntl bcmath zip
 
-# Install PHP extensions
-RUN docker-php-ext-install \
-    pdo \
-    pdo_mysql \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath \
-    zip
+# 3. ลบ build dependencies หลังติดตั้ง
+RUN apk del --no-cache build-base \
+    libpng-dev libjpeg-turbo-dev freetype-dev
 
 # Copy files
 COPY . .
