@@ -1,17 +1,22 @@
 FROM php:8.2-fpm-alpine
 
-# 1. เพิ่ม build dependencies ก่อน
+WORKDIR /var/www/html
+
+# 1. ติดตั้ง build dependencies
 RUN apk add --no-cache build-base \
     libpng-dev libjpeg-turbo-dev freetype-dev \
     libzip-dev oniguruma-dev
 
-# 2. ติดตั้ง extensions
+# 2. ติดตั้ง PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql mbstring \
     exif pcntl bcmath zip
 
-# 3. ลบ build dependencies หลังติดตั้ง
+# 3. ลบ build dependencies
 RUN apk del --no-cache build-base \
     libpng-dev libjpeg-turbo-dev freetype-dev
+
+# ✅ เพิ่ม Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy files
 COPY . .
