@@ -12,7 +12,7 @@
         <!-- Navigation -->
         <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
             <div class="container">
-                <a class="navbar-brand" href="#"><i class="fas fa-code"></i> Clin tun
+                <a class="navbar-brand" href="#" style="color: black; font-weight: 700;"><i class="fas fa-code"></i> Clin tun
                     <span class="db-status-indicator {{ $dbConnected ? 'connected' : 'disconnected' }}" title="{{ $dbConnected ? 'Database Connected' : 'Database Disconnected' }}"></span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

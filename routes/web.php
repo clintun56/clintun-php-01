@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LeaveController;
 
 Route::get('/', function () {
     $dbConnected = false;
@@ -14,6 +16,8 @@ Route::get('/', function () {
     return view('welcome', ['dbConnected' => $dbConnected]);
 });
 
-Route::get('/auth/google', [App\Http\Controllers\AuthController::class, 'redirectToGoogle'])->name('google.login');
-Route::get('/auth/google/callback', [App\Http\Controllers\AuthController::class, 'handleGoogleCallback']);
-Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::resource('leaves', LeaveController::class);
