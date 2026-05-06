@@ -25,8 +25,9 @@ class LeaveController extends Controller
         }
 
         $leaves = Leave::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+        $leaveTypes = Leave::getLeaveTypes();
         
-        return view('leaves.index', compact('leaves', 'user'));
+        return view('leaves.index', compact('leaves', 'user', 'leaveTypes'));
     }
 
     // แสดงฟอร์มขอลา

@@ -86,7 +86,7 @@
                     <tbody>
                         @foreach ($leaves as $leave)
                             <tr>
-                                <td><strong>{{ Leave::getLeaveTypes()[$leave->leave_type] }}</strong></td>
+                                <td><strong>{{ $leaveTypes[$leave->leave_type] }}</strong></td>
                                 <td>{{ $leave->start_date->format('d/m/Y') }} - {{ $leave->end_date->format('d/m/Y') }}</td>
                                 <td><span style="font-weight: 600; color: #667eea;">{{ $leave->total_days }} วัน</span></td>
                                 <td>
