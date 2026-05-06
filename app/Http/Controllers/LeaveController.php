@@ -12,7 +12,7 @@ class LeaveController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        // ไม่ใช้ auth middleware เพราะ custom session auth
     }
 
     // แสดงรายการขอลา
