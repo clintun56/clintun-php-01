@@ -212,6 +212,10 @@
                         <i class="fas fa-arrow-left"></i> กลับไป
                     </a>
 
+                    <a href="{{ route('leaves.pdf', $leave) }}" class="btn btn-outline-success" target="_blank">
+                        <i class="fas fa-file-pdf"></i> ดาวน์โหลด PDF
+                    </a>
+
                     @if ($leave->status === 'pending' && $leave->user_id === session('user')['id'])
                         <a href="{{ route('leaves.edit', $leave) }}" class="btn btn-warning text-white">
                             <i class="fas fa-edit"></i> แก้ไข

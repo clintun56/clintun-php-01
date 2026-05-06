@@ -152,4 +152,23 @@ class LeaveController extends Controller
 
         return redirect()->route('leaves.index')->with('success', 'ลบขอลาสำเร็จ');
     }
+
+    // ดาวน์โหลด PDF
+    public function downloadPdf(Leave $leave)
+    {
+        $user = User::find(session('user')['id']);
+        
+        if (!$user) {
+            return redirect('/')->with('error', 'กรุณาเข้าสู่ระบบ');
+        }
+        
+        // เฉพาะเจ้าของการขอลาหรือผู้อนุมัติเท่านั้นที่ดาวน์โหลดได้
+        if ($user->id !== $leave->user_id && (!$leave->approved_by || $user->id !== $leave->approved_by)) {
+            abort(403);
+        }
+
+        $pdf = \PDF::loadView('leaves.pdf', compact('leave'));
+        
+        return $pdf->download("leave_{$leave->id}.pdf");
+    }
 }

@@ -102,6 +102,9 @@
                                     <a href="{{ route('leaves.show', $leave) }}" class="btn btn-sm btn-outline-primary" title="ดูรายละเอียด">
                                         <i class="fas fa-eye"></i>
                                     </a>
+                                    <a href="{{ route('leaves.pdf', $leave) }}" class="btn btn-sm btn-outline-success" title="ดาวน์โหลด PDF" target="_blank">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </a>
                                     @if ($leave->status == 'pending')
                                         <a href="{{ route('leaves.edit', $leave) }}" class="btn btn-sm btn-outline-warning" title="แก้ไข">
                                             <i class="fas fa-edit"></i>
