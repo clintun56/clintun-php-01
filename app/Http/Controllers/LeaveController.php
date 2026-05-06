@@ -80,9 +80,14 @@ class LeaveController extends Controller
     // แสดงรายละเอียด
     public function show(Leave $leave)
     {
-        $user = User::find(session('user')['id']);
+        $user = User::find(session('user')['id'] ?? null);
         
-        if ($user->id !== $leave->user_id && $user->id !== $leave->approved_by) {
+        if (!$user) {
+            return redirect('/')->with('error', 'กรุณาเข้าสู่ระบบ');
+        }
+        
+        // เฉพาะเจ้าของการขอลาหรือผู้อนุมัติเท่านั้นที่ดูได้
+        if ($user->id !== $leave->user_id && (!$leave->approved_by || $user->id !== $leave->approved_by)) {
             abort(403);
         }
 
