@@ -14,6 +14,11 @@ npm run build
 echo "Running database migrations..."
 php artisan migrate --force
 
+# Clear caches
+echo "Clearing caches..."
+php artisan config:clear
+php artisan cache:clear
+
 # Cache configuration
 echo "Caching configuration..."
 php artisan config:cache
