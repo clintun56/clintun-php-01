@@ -5,7 +5,11 @@ echo "Starting Laravel application..."
 
 cd /var/www/html
 
-# Build frontend assets
+# Cache configuration FIRST (ให้ npm build รู้ APP_URL)
+echo "Caching configuration..."
+php artisan config:cache
+
+# Build frontend assets (ทีนี้ Vite รู้ APP_URL=https://...)
 echo "Building assets..."
 npm install
 npm run build
@@ -18,10 +22,6 @@ php artisan migrate --force
 echo "Clearing caches..."
 php artisan config:clear
 php artisan cache:clear
-
-# Cache configuration
-echo "Caching configuration..."
-php artisan config:cache
 
 # Cache routes
 echo "Caching routes..."
