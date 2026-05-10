@@ -7,20 +7,20 @@ cd /var/www/html
 
 # Build frontend assets
 echo "Building assets..."
-npm install 2>&1 || true
-npm run build 2>&1 || true
+npm install
+npm run build
 
 # Run migrations
 echo "Running database migrations..."
-php artisan migrate --force 2>&1 || true
+php artisan migrate --force
 
 # Cache configuration
 echo "Caching configuration..."
-php artisan config:cache 2>&1 || true
+php artisan config:cache
 
 # Cache routes
 echo "Caching routes..."
-php artisan route:cache 2>&1 || true
+php artisan route:cache
 
 # Fix permissions
 chmod -R 777 storage bootstrap/cache
