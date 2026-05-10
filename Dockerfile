@@ -2,8 +2,8 @@ FROM php:8.5-fpm-alpine
 
 WORKDIR /var/www/html
 
-# ติดตั้ง dependencies (รวม git สำหรับ composer)
-RUN apk add --no-cache curl git build-base \
+# ติดตั้ง dependencies (รวม git สำหรับ composer และ Node.js)
+RUN apk add --no-cache curl git build-base nodejs npm \
     libpng-dev libjpeg-turbo-dev freetype-dev \
     libzip-dev oniguruma-dev
 
