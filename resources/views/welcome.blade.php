@@ -6,7 +6,7 @@
         <title>Clin tun - Full Stack Developer & IT Support</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
         <!-- Navigation -->
@@ -64,7 +64,7 @@
         <section class="hero-section">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="hero-title" style="color: black;">Clin tun</h1>
+                    <h1 class="hero-title">Clin tun</h1>
                     <p class="hero-subtitle">นักพัฒนาแบบเต็มสเตก และ ผู้ให้บริการด้าน IT</p>
                     <p class="hero-description">
                         เปลี่ยนแนวคิดให้เป็นโซลูชันเว็บที่มีประสิทธิภาพด้วยเทคโนโลยีสมัยใหม่
@@ -318,7 +318,7 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="container">
-                <h5 style="margin-bottom: 1rem; font-weight: 700; color: #f093fb;">Clin tun</h1>
+                <h5 style="margin-bottom: 1rem; font-weight: 700; color: #f093fb;">Clin tun</h5>
                 <p>นักพัฒนาแบบเต็มสเตก และ ผู้ให้บริการด้าน IT</p>
                 <p style="margin: 1rem 0; opacity: 0.8; font-size: 0.9rem;">
                     เชี่ยวชาญด้าน PHP • Laravel • Next.js • MySQL • NoSQL • Docker • Prisma • Flutter
