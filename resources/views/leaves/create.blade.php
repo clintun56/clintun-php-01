@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -68,7 +67,14 @@
                         <li class="nav-item"><a class="nav-link" href="{{ route('leaves.index') }}">ระบบลา</a></li>
                         <li class="nav-item" style="margin-left: 20px;">
                             <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(240, 147, 251, 0.15) 100%); padding: 8px 16px; border-radius: 20px;">
-                                <i class="fas fa-user-circle" style="color: #667eea;"></i>
+                                <img 
+                                    id="userAvatarCreate"
+                                    src="{{ session('user')['avatar'] }}" 
+                                    alt="{{ session('user')['name'] }}" 
+                                    style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #667eea;"
+                                    onerror="this.style.display='none'; document.getElementById('userAvatarFallbackCreate').style.display='inline';"
+                                >
+                                <i id="userAvatarFallbackCreate" class="fas fa-user-circle" style="color: #667eea; display: none;"></i>
                                 <span style="color: white; font-weight: 600;">{{ session('user')['name'] }}</span>
                             </div>
                         </li>

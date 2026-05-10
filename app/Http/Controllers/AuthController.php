@@ -24,21 +24,22 @@ class AuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
             
-            // บันทึกข้อมูลผู้ใช้ลง users table
+            // บันทึกข้อมูลผู้ใช้ลง users table พร้อมรูปภาพ
             $user = User::updateOrCreate(
                 ['email' => $googleUser->getEmail()],
                 [
                     'name' => $googleUser->getName(),
                     'email_verified_at' => now(),
+                    'avatar' => $googleUser->getAvatar(),
                 ]
             );
             
-            // เก็บข้อมูลผู้ใช้ใน Session
+            // เก็บข้อมูลผู้ใช้ใน Session (ดึงรูปจากฐานข้อมูล)
             session(['user' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'avatar' => $googleUser->getAvatar(),
+                'avatar' => $user->avatar,
             ]]);
             
             // ล็อกอินผู้ใช้

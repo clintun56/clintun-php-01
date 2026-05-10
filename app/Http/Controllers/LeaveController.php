@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Mpdf\Mpdf;
 
 class LeaveController extends Controller
 {
@@ -156,7 +157,14 @@ class LeaveController extends Controller
     // ดาวน์โหลด PDF
     public function downloadPdf(Leave $leave)
     {
-        $user = User::find(session('user')['id']);
+        $sessionUser = session('user');
+        
+        // ตรวจสอบ session
+        if (!$sessionUser || !isset($sessionUser['id'])) {
+            return redirect('/')->with('error', 'กรุณาเข้าสู่ระบบ');
+        }
+        
+        $user = User::find($sessionUser['id']);
         
         if (!$user) {
             return redirect('/')->with('error', 'กรุณาเข้าสู่ระบบ');
@@ -167,8 +175,102 @@ class LeaveController extends Controller
             abort(403);
         }
 
-        $pdf = \PDF::loadView('leaves.pdf', compact('leave'));
+        // Load relationships
+        $leave->load(['user', 'approver']);
         
-        return $pdf->download("leave_{$leave->id}.pdf");
+        // Get leave types for display
+        $leaveTypes = Leave::getLeaveTypes();
+
+        // Render view as HTML
+        $html = view('leaves.pdf', ['leave' => $leave, 'leaveTypes' => $leaveTypes])->render();
+
+        // Create mPDF instance with Thai font configuration
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'orientation' => 'P',
+            'margin_left' => 15,
+            'margin_right' => 15,
+            'margin_top' => 15,
+            'margin_bottom' => 15,
+            'default_font' => 'dejavusans',  // Use DejaVu Sans which has Thai support
+            'tempDir' => storage_path('temp'),
+            'autoScriptToLang' => true,  // Auto-detect script for language
+            'autoLangToFont' => true,    // Auto-select font based on language
+        ]);
+
+        // Set font explicitly to DejaVu Sans
+        $mpdf->SetFont('dejavusans', '', 11);
+
+        // Write HTML to PDF
+        $mpdf->WriteHTML($html);
+
+        // Get PDF as string (not output directly)
+        $pdfContent = $mpdf->Output('', 'S');
+
+        // Return PDF response
+        return response($pdfContent, 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="leave_'.$leave->id.'.pdf"');
+    }
+
+    // ดูตัวอย่าง PDF (inline)
+    public function viewPdf(Leave $leave)
+    {
+        $sessionUser = session('user');
+        
+        // ตรวจสอบ session
+        if (!$sessionUser || !isset($sessionUser['id'])) {
+            return redirect('/')->with('error', 'กรุณาเข้าสู่ระบบ');
+        }
+        
+        $user = User::find($sessionUser['id']);
+        
+        if (!$user) {
+            return redirect('/')->with('error', 'กรุณาเข้าสู่ระบบ');
+        }
+        
+        // เฉพาะเจ้าของการขอลาหรือผู้อนุมัติเท่านั้นที่ดูได้
+        if ($user->id !== $leave->user_id && (!$leave->approved_by || $user->id !== $leave->approved_by)) {
+            abort(403);
+        }
+
+        // Load relationships
+        $leave->load(['user', 'approver']);
+        
+        // Get leave types for display
+        $leaveTypes = Leave::getLeaveTypes();
+
+        // Render view as HTML
+        $html = view('leaves.pdf', ['leave' => $leave, 'leaveTypes' => $leaveTypes])->render();
+
+        // Create mPDF instance with Thai font configuration
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'orientation' => 'P',
+            'margin_left' => 15,
+            'margin_right' => 15,
+            'margin_top' => 15,
+            'margin_bottom' => 15,
+            'default_font' => 'dejavusans',  // Use DejaVu Sans which has Thai support
+            'tempDir' => storage_path('temp'),
+            'autoScriptToLang' => true,  // Auto-detect script for language
+            'autoLangToFont' => true,    // Auto-select font based on language
+        ]);
+
+        // Set font explicitly to DejaVu Sans
+        $mpdf->SetFont('dejavusans', '', 11);
+
+        // Write HTML to PDF
+        $mpdf->WriteHTML($html);
+
+        // Get PDF as string (not output directly)
+        $pdfContent = $mpdf->Output('', 'S');
+
+        // Return PDF response (inline for viewing)
+        return response($pdfContent, 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="leave_'.$leave->id.'.pdf"');
     }
 }

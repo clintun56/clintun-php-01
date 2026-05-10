@@ -29,7 +29,14 @@
                             
                             <li class="nav-item" style="margin-left: 20px; display: flex; align-items: center; gap: 15px;">
                                 <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(240, 147, 251, 0.15) 100%); padding: 8px 16px; border-radius: 20px; border: 1.5px solid rgba(102, 126, 234, 0.3); transition: all 0.3s ease;">
-                                    <i class="fas fa-user-circle" style="color: #667eea; font-size: 1.2rem;"></i>
+                                    <img 
+                                        id="userAvatar"
+                                        src="{{ session('user')['avatar'] }}" 
+                                        alt="{{ session('user')['name'] }}" 
+                                        style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #667eea; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);"
+                                        onerror="this.style.display='none'; document.getElementById('userAvatarFallback').style.display='flex';"
+                                    >
+                                    <i id="userAvatarFallback" class="fas fa-user-circle" style="color: #667eea; font-size: 1.2rem; display: none;"></i>
                                     <span style="color: #1a1a2e; font-weight: 600; font-size: 0.9rem;">
                                         {{ session('user')['name'] }}
                                     </span>
@@ -57,7 +64,7 @@
         <section class="hero-section">
             <div class="container">
                 <div class="hero-content">
-                    <h1 class="hero-title">Clin tun</h1>
+                    <h1 class="hero-title" style="color: black;">Clin tun</h1>
                     <p class="hero-subtitle">นักพัฒนาแบบเต็มสเตก และ ผู้ให้บริการด้าน IT</p>
                     <p class="hero-description">
                         เปลี่ยนแนวคิดให้เป็นโซลูชันเว็บที่มีประสิทธิภาพด้วยเทคโนโลยีสมัยใหม่
@@ -311,7 +318,7 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="container">
-                <h5 style="margin-bottom: 1rem; font-weight: 700; color: #f093fb;">Clin tun</h5>
+                <h5 style="margin-bottom: 1rem; font-weight: 700; color: #f093fb;">Clin tun</h1>
                 <p>นักพัฒนาแบบเต็มสเตก และ ผู้ให้บริการด้าน IT</p>
                 <p style="margin: 1rem 0; opacity: 0.8; font-size: 0.9rem;">
                     เชี่ยวชาญด้าน PHP • Laravel • Next.js • MySQL • NoSQL • Docker • Prisma • Flutter

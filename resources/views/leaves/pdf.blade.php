@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>ใบขอลา</title>
     <style>
         * {
@@ -10,164 +10,232 @@
             padding: 0;
             box-sizing: border-box;
         }
+        
         body {
-            font-family: 'Arial', sans-serif;
-            font-size: 12pt;
-            line-height: 1.6;
-            color: #333;
-        }
-        .container {
-            max-width: 8.5in;
-            height: 11in;
-            margin: 0 auto;
-            padding: 40px;
+            font-family: dejavusans;
+            font-size: 10pt;
+            line-height: 1.3;
+            color: #000;
             background: white;
         }
+        
+        .page {
+            width: 21cm;
+            height: 29.7cm;
+            padding: 10mm 12mm;
+            margin: 0 auto;
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+        
         .header {
             text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #333;
-            padding-bottom: 15px;
+            border-bottom: 1.5px solid #000;
+            padding-bottom: 5px;
+            margin-bottom: 8px;
         }
+        
         .header h1 {
-            font-size: 18pt;
+            font-size: 12pt;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin: 0;
         }
+        
         .header p {
-            font-size: 11pt;
+            font-size: 8pt;
             color: #666;
+            margin: 1px 0 0 0;
         }
-        .content {
-            margin: 30px 0;
+        
+        .section {
+            margin-bottom: 6px;
         }
-        .form-group {
-            display: flex;
-            margin-bottom: 15px;
-            line-height: 1.8;
-        }
-        .form-label {
-            width: 35%;
+        
+        .section-title {
             font-weight: bold;
-            color: #333;
+            background: #f0f0f0;
+            padding: 3px 5px;
+            margin-bottom: 4px;
+            font-size: 9pt;
         }
-        .form-value {
-            width: 65%;
-            border-bottom: 1px dotted #999;
-            padding-left: 10px;
-            color: #555;
+        
+        .row {
+            margin-bottom: 3px;
         }
-        .status-section {
-            margin-top: 40px;
-            padding: 15px;
-            background: #f5f5f5;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .status-label {
+        
+        .label {
             font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        .status-badge {
+            width: 30%;
             display: inline-block;
-            padding: 8px 16px;
-            border-radius: 5px;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 10px;
+            padding-right: 5px;
+            font-size: 9pt;
         }
-        .status-pending {
-            background-color: #ff9800;
+        
+        .value {
+            width: 65%;
+            display: inline-block;
+            border-bottom: 1px dotted #999;
+            padding: 0 2px;
+            font-size: 9pt;
         }
-        .status-approved {
-            background-color: #4caf50;
-        }
-        .status-rejected {
-            background-color: #f44336;
-        }
-        .footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 10pt;
-            color: #999;
-        }
-        .signature-section {
-            margin-top: 40px;
-            display: flex;
-            justify-content: space-around;
-        }
-        .signature-box {
-            text-align: center;
-            width: 45%;
-        }
-        .signature-line {
-            border-top: 1px solid #333;
-            margin-top: 40px;
-            margin-bottom: 10px;
-        }
-        .signature-name {
-            font-size: 10pt;
-        }
+        
         table {
             width: 100%;
-            margin: 20px 0;
             border-collapse: collapse;
+            margin: 5px 0;
+            font-size: 9pt;
         }
-        th, td {
+        
+        table th {
+            background: #e0e0e0;
             border: 1px solid #999;
-            padding: 10px;
+            padding: 2px 3px;
             text-align: left;
-        }
-        th {
-            background-color: #f0f0f0;
             font-weight: bold;
+            font-size: 8pt;
         }
-        @media print {
-            body {
-                margin: 0;
-                padding: 0;
-            }
-            .container {
-                max-width: 100%;
-                height: 100%;
-                padding: 20mm;
-            }
+        
+        table td {
+            border: 1px solid #999;
+            padding: 2px 3px;
+            font-size: 9pt;
+        }
+        
+        .status-box {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 5px;
+            margin: 4px 0;
+            font-size: 9pt;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 3px 6px;
+            border-radius: 2px;
+            font-weight: bold;
+            font-size: 8pt;
+            margin-bottom: 4px;
+        }
+        
+        .status-pending {
+            background: #ffe0b2;
+            color: #e65100;
+        }
+        
+        .status-approved {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .status-rejected {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        
+        .signature-row {
+            margin-top: 8px;
+            display: inline-block;
+            width: 48%;
+            vertical-align: top;
+            margin-right: 2%;
+            text-align: center;
+            font-size: 8pt;
+        }
+        
+        .signature-line {
+            border-top: 1px solid #000;
+            margin: 12px 5px 2px 5px;
+            height: 15px;
+        }
+        
+        .signature-name {
+            font-size: 8pt;
+            margin-top: 1px;
+            min-height: 10px;
+        }
+        
+        .signature-date {
+            font-size: 7pt;
+            color: #666;
+            margin-top: 1px;
+        }
+        
+        .footer {
+            margin-top: 5px;
+            padding-top: 3px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            font-size: 7pt;
+            color: #666;
+        }
+        
+        .avatar-section {
+            text-align: center;
+            margin: 3px 0 5px 0;
+        }
+        
+        .avatar-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #667eea;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="page">
         <!-- Header -->
         <div class="header">
             <h1>ใบขอลา</h1>
             <p>Leave Request Form</p>
+            
+            @if ($leave->user->avatar)
+                <div class="avatar-section">
+                    <img 
+                        src="{{ $leave->user->avatar }}" 
+                        alt="{{ $leave->user->name }}" 
+                        class="avatar-image"
+                    >
+                </div>
+            @endif
         </div>
 
         <!-- Main Content -->
-        <div class="content">
-            <!-- Requester Info -->
-            <div class="form-group">
-                <span class="form-label">ชื่อผู้ขอลา:</span>
-                <span class="form-value">{{ $leave->user->name }}</span>
+        
+        <!-- Section 1: Requester Information -->
+        <div class="section">
+            <div class="section-title">ข้อมูลผู้ขอลา (Requester Information)</div>
+            
+            <div class="row">
+                <span class="label">ชื่อผู้ขอลา:</span>
+                <span class="value">{{ $leave->user->name }}</span>
             </div>
-
-            <div class="form-group">
-                <span class="form-label">ประเภทการลา:</span>
-                <span class="form-value">
+            
+            <div class="row">
+                <span class="label">ประเภทการลา:</span>
+                <span class="value">
                     @php
                         $leaveTypes = \App\Models\Leave::getLeaveTypes();
+                        $leaveType = $leaveTypes[$leave->leave_type] ?? $leave->leave_type;
                     @endphp
-                    {{ $leaveTypes[$leave->leave_type] ?? $leave->leave_type }}
+                    {{ $leaveType }}
                 </span>
             </div>
+        </div>
 
-            <!-- Date Information -->
+        <!-- Section 2: Leave Duration -->
+        <div class="section">
+            <div class="section-title">ระยะเวลาการลา (Leave Duration)</div>
+            
             <table>
                 <tr>
-                    <th style="width: 40%;">วันเริ่มต้น (Start Date)</th>
-                    <th style="width: 30%;">วันสิ้นสุด (End Date)</th>
-                    <th style="width: 30%;">จำนวนวัน (Days)</th>
+                    <th style="width: 35%;">วันเริ่มต้น<br>(Start Date)</th>
+                    <th style="width: 35%;">วันสิ้นสุด<br>(End Date)</th>
+                    <th style="width: 30%;">จำนวนวัน<br>(Total Days)</th>
                 </tr>
                 <tr>
                     <td>{{ $leave->start_date->format('d/m/Y') }}</td>
@@ -175,61 +243,80 @@
                     <td style="text-align: center; font-weight: bold;">{{ $leave->total_days }} วัน</td>
                 </tr>
             </table>
+        </div>
 
-            <!-- Reason -->
-            <div class="form-group">
-                <span class="form-label">เหตุผล:</span>
-                <span class="form-value">{{ $leave->reason ?? '(ไม่มี)' }}</span>
+        <!-- Section 3: Reason -->
+        <div class="section">
+            <div class="section-title">เหตุผลในการลา (Reason)</div>
+            
+            <div style="border: 1px solid #999; padding: 5px; min-height: 20px; background: #fafafa; font-size: 9pt;">
+                {{ $leave->reason ?? '(ไม่มี)' }}
             </div>
+        </div>
 
-            <!-- Status Section -->
-            <div class="status-section">
-                <div class="status-label">สถานะการขอลา (Status):</div>
-                <span class="status-badge status-{{ $leave->status }}">
-                    @if ($leave->status === 'pending')
-                        รอการอนุมัติ (Pending)
-                    @elseif ($leave->status === 'approved')
-                        อนุมัติแล้ว (Approved)
-                    @elseif ($leave->status === 'rejected')
-                        ปฏิเสธแล้ว (Rejected)
-                    @endif
-                </span>
-
-                @if ($leave->approved_by)
-                    <div style="margin-top: 10px; font-size: 11pt;">
-                        <strong>ผู้อนุมัติ:</strong> {{ $leave->approver->name ?? 'N/A' }}<br>
-                        @if ($leave->approved_at)
-                            <strong>วันที่อนุมัติ:</strong> {{ $leave->approved_at->format('d/m/Y H:i') }}<br>
-                        @endif
-                        @if ($leave->approval_comment)
-                            <strong>หมายเหตุ:</strong> {{ $leave->approval_comment }}<br>
-                        @endif
+        <!-- Section 4: Status -->
+        <div class="section">
+            <div class="section-title">สถานะการขอลา (Status)</div>
+            
+            <div class="status-box">
+                @if ($leave->status === 'pending')
+                    <div class="status-badge status-pending">รอการอนุมัติ (Pending)</div>
+                @elseif ($leave->status === 'approved')
+                    <div class="status-badge status-approved">อนุมัติแล้ว (Approved)</div>
+                @elseif ($leave->status === 'rejected')
+                    <div class="status-badge status-rejected">ปฏิเสธแล้ว (Rejected)</div>
+                @endif
+                
+                @if ($leave->approved_by && $leave->approver)
+                    <div style="margin-top: 3px; font-size: 9pt;">
+                        <strong>ผู้อนุมัติ (Approver):</strong> {{ $leave->approver->name }}
+                    </div>
+                @endif
+                
+                @if ($leave->approved_at)
+                    <div style="margin-top: 2px; font-size: 9pt;">
+                        <strong>วันที่อนุมัติ (Approval Date):</strong> {{ $leave->approved_at->format('d/m/Y H:i') }}
+                    </div>
+                @endif
+                
+                @if ($leave->approval_comment)
+                    <div style="margin-top: 2px; font-size: 9pt;">
+                        <strong>หมายเหตุ (Comment):</strong> {{ $leave->approval_comment }}
                     </div>
                 @endif
             </div>
+        </div>
 
-            <!-- Signature Section -->
-            <div class="signature-section">
-                <div class="signature-box">
-                    <div style="font-size: 11pt; margin-bottom: 20px;">ลายมือชื่อผู้ขอลา</div>
-                    <div class="signature-line"></div>
-                    <div class="signature-name">{{ $leave->user->name }}</div>
-                    <div style="font-size: 10pt; color: #999;">วันที่ {{ now()->format('d/m/Y') }}</div>
+        <!-- Section 5: Signatures -->
+        <div>
+            <div class="signature-row">
+                <div style="font-weight: bold; margin-bottom: 4px; font-size: 9pt;">ลายมือชื่อผู้ขอลา</div>
+                <div style="font-size: 7pt; color: #666; margin-bottom: 2px;">Requester Signature</div>
+                 <div class="signature-name">{{ $leave->user->name }}</div>
+                <div class="signature-date">วันที่: {{ now()->format('d/m/Y') }}</div>
+                <div class="signature-line"></div>
+               
+            </div>
+            
+            <div class="signature-row">
+                <div style="font-weight: bold; margin-bottom: 4px; font-size: 9pt;">ลายมือชื่อผู้อนุมัติ</div>
+                <div style="font-size: 7pt; color: #666; margin-bottom: 2px;">Approver Signature</div>
+                <div class="signature-line"></div>
+                <div class="signature-name">
+                    @if ($leave->approver)
+                        {{ $leave->approver->name }}
+                    @else
+                        _____________________
+                    @endif
                 </div>
-
-                <div class="signature-box">
-                    <div style="font-size: 11pt; margin-bottom: 20px;">ลายมือชื่อผู้อนุมัติ</div>
-                    <div class="signature-line"></div>
-                    <div class="signature-name">{{ $leave->approver->name ?? '___________________' }}</div>
-                    <div style="font-size: 10pt; color: #999;">วันที่ ___/___/______</div>
-                </div>
+                <div class="signature-date">วันที่: ___/___/_______</div>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            <p>เอกสารนี้เป็นใบขอลารายบุคคล / This is a leave request form</p>
-            <p>วันที่พิมพ์: {{ now()->format('d/m/Y H:i:s') }}</p>
+            <p style="margin: 0; padding: 0;">เอกสารนี้เป็นใบขอลารายบุคคล / This is a leave request form</p>
+            <p style="margin: 1px 0 0 0; padding: 0;">วันที่พิมพ์: {{ now()->format('d/m/Y H:i:s') }}</p>
         </div>
     </div>
 </body>

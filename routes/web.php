@@ -22,3 +22,4 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::resource('leaves', LeaveController::class, ['parameters' => ['leaves' => 'leave']]);
 Route::get('/leaves/{leave}/pdf', [LeaveController::class, 'downloadPdf'])->name('leaves.pdf');
+Route::get('/leaves/{leave}/pdf-view', [LeaveController::class, 'viewPdf'])->name('leaves.pdf-view');

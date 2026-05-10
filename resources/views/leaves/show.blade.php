@@ -87,6 +87,84 @@
             color: #764ba2 !important;
             text-decoration: underline;
         }
+        .pdf-preview-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            /* max-width: 1500px; */
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 0;
+        }
+        .pdf-preview-modal.show {
+            display: flex;
+        }
+        .pdf-preview-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0 ;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 1300px;
+            height: 100%;
+            max-height: 800px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .pdf-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        .pdf-preview-body {
+            flex: 1;
+            overflow: hidden;
+        }
+        .pdf-preview-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .pdf-preview-footer {
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            background: #f8f9fa;
+            border-radius: 0 0 15px 15px;
+        }
+        .pdf-preview-footer button {
+            flex: 1;
+            padding: 10px 20px;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .pdf-preview-footer .btn-close {
+            background: #6c757d;
+            color: white;
+        }
+        .pdf-preview-footer .btn-close:hover {
+            background: #5a6268;
+        }
+        .pdf-preview-footer .btn-download {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .pdf-preview-footer .btn-download:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -111,8 +189,16 @@
                 </ul>
                 @if (session('user'))
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 8px 15px; border-radius: 20px; color: #1a1a2e;">
-                            {{ session('user')['name'] }}
+                        <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 8px 15px; border-radius: 20px; color: white;">
+                            <img 
+                                id="userAvatarShow"
+                                src="{{ session('user')['avatar'] }}" 
+                                alt="{{ session('user')['name'] }}" 
+                                style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid white;"
+                                onerror="this.style.display='none'; document.getElementById('userAvatarFallbackShow').style.display='inline';"
+                            >
+                            <i id="userAvatarFallbackShow" class="fas fa-user-circle" style="color: white; display: none; font-size: 1.2rem;"></i>
+                            <span style="font-weight: 600;">{{ session('user')['name'] }}</span>
                         </div>
                         <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
                             @csrf
@@ -212,9 +298,9 @@
                         <i class="fas fa-arrow-left"></i> กลับไป
                     </a>
 
-                    <a href="{{ route('leaves.pdf', $leave) }}" class="btn btn-outline-success" target="_blank">
-                        <i class="fas fa-file-pdf"></i> ดาวน์โหลด PDF
-                    </a>
+                    <button type="button" class="btn btn-outline-success" onclick="openPdfPreview('{{ route('leaves.pdf-view', $leave) }}', '{{ route('leaves.pdf', $leave) }}')">
+                        <i class="fas fa-file-pdf"></i> ดูตัวอย่าง PDF
+                    </button>
 
                     @if ($leave->status === 'pending' && $leave->user_id === session('user')['id'])
                         <a href="{{ route('leaves.edit', $leave) }}" class="btn btn-warning text-white">
@@ -232,6 +318,69 @@
             </div>
         </div>
     </div>
+
+    <!-- PDF Preview Modal -->
+    <div id="pdfPreviewModal" class="pdf-preview-modal">
+        <div class="pdf-preview-content">
+            <div class="pdf-preview-header">
+                <h5 style="margin: 0;">
+                    <i class="fas fa-file-pdf"></i> ตัวอย่าง PDF
+                </h5>
+                <button type="button" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;" onclick="closePdfPreview()">
+                    &times;
+                </button>
+            </div>
+            <div class="pdf-preview-body">
+                <iframe id="pdfFrame" src=""></iframe>
+            </div>
+            <div class="pdf-preview-footer">
+                <button class="btn-close" onclick="closePdfPreview()">
+                    <i class="fas fa-times"></i> ปิด
+                </button>
+                <button class="btn-download" id="downloadBtn" type="button">
+                    <i class="fas fa-download"></i> ดาวน์โหลด
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let pdfViewUrl = '';
+        let pdfDownloadUrl = '';
+
+        function openPdfPreview(viewUrl, downloadUrl) {
+            pdfViewUrl = viewUrl;
+            pdfDownloadUrl = downloadUrl;
+            document.getElementById('pdfFrame').src = viewUrl;
+            document.getElementById('pdfPreviewModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Set download button
+            document.getElementById('downloadBtn').onclick = function() {
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = 'leave_' + new Date().getTime() + '.pdf';
+                link.target = '_blank';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+        }
+
+        function closePdfPreview() {
+            document.getElementById('pdfPreviewModal').classList.remove('show');
+            document.getElementById('pdfFrame').src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('pdfPreviewModal');
+            if (event.target === modal) {
+                closePdfPreview();
+            }
+        };
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

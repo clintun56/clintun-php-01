@@ -44,7 +44,14 @@
                     @if (session('user'))
                         <li class="nav-item" style="margin-left: 20px;">
                             <div style="display: flex; align-items: center; gap: 10px;">
-                                <i class="fas fa-user-circle" style="color: #667eea;"></i>
+                                <img 
+                                    id="userAvatar2"
+                                    src="{{ session('user')['avatar'] }}" 
+                                    alt="{{ session('user')['name'] }}" 
+                                    style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #667eea;"
+                                    onerror="this.style.display='none'; document.getElementById('userAvatarFallback2').style.display='inline';"
+                                >
+                                <i id="userAvatarFallback2" class="fas fa-user-circle" style="color: #667eea; display: none;"></i>
                                 <span style="color: white; font-weight: 600;">{{ session('user')['name'] }}</span>
                             </div>
                         </li>
