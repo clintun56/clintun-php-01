@@ -6,24 +6,19 @@
     <title>รายละเอียดการขอลา</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px 0;
+            padding: 0;
         }
-        .navbar {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .navbar-brand {
-            font-weight: bold;
-            color: #667eea !important;
-        }
-        .container {
-            max-width: 700px;
-            margin-top: 30px;
+     
+    
+         .container-custom {
+          max-width: 700px;
+          margin: 30px auto 0;
+          padding: 0 20px;
         }
         .card {
             border: none;
@@ -78,15 +73,7 @@
             padding: 10px 20px;
             font-weight: 500;
         }
-        .nav-link {
-            color: #667eea !important;
-            margin: 0 10px;
-            transition: all 0.3s;
-        }
-        .nav-link:hover {
-            color: #764ba2 !important;
-            text-decoration: underline;
-        }
+      
         .pdf-preview-modal {
             display: none;
             position: fixed;
@@ -95,7 +82,6 @@
             top: 0;
             width: 100%;
             height: 100%;
-            /* max-width: 1500px; */
             background-color: rgba(0, 0, 0, 0.7);
             padding: 0;
         }
@@ -169,51 +155,63 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-leaf"></i> Clin tun
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgba(26, 26, 46, 0.98); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);">
+        <div class="container">
+            <!-- Brand -->
+            <a class="navbar-brand" href="/" style="color: white; font-weight: 700; font-size: 1.3rem;">
+                <i class="fas fa-code"></i> Clin tun
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="/">หน้าแรก</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/#skills">ทักษะ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/#services">บริการ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/#contact">ติดต่อ</a></li>
-                    @if (session('user'))
-                        <li class="nav-item"><a class="nav-link" href="{{ route('leaves.index') }}"><i class="fas fa-file-alt"></i> ระบบลา</a></li>
-                    @endif
-                </ul>
+            
+            <!-- Menu -->
+            <ul class="navbar-nav ms-auto" style="gap: 1rem;">
+                <li class="nav-item"><a class="nav-link" href="/" style="color: white; font-weight: 500;">หน้าแรก</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#skills" style="color: white; font-weight: 500;">ทักษะ</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#services" style="color: white; font-weight: 500;">บริการ</a></li>
+                
                 @if (session('user'))
-                    <div style="display: flex; align-items: center; gap: 15px;">
-                        <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 8px 15px; border-radius: 20px; color: white;">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('leaves.index') }}" style="color: white; font-weight: 500;">
+                            <i class="fas fa-file-alt"></i> ระบบลา
+                        </a>
+                    </li>
+                    
+                    <!-- User Avatar Card -->
+                    <li class="nav-item">
+                        <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(240, 147, 251, 0.15) 100%); padding: 8px 16px; border-radius: 20px; border: 1px solid rgba(102, 126, 234, 0.3);">
                             <img 
-                                id="userAvatarShow"
+                                class="user-avatar"
                                 src="{{ session('user')['avatar'] }}" 
                                 alt="{{ session('user')['name'] }}" 
-                                style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid white;"
-                                onerror="this.style.display='none'; document.getElementById('userAvatarFallbackShow').style.display='inline';"
+                                style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #667eea; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"
                             >
-                            <i id="userAvatarFallbackShow" class="fas fa-user-circle" style="color: white; display: none; font-size: 1.2rem;"></i>
-                            <span style="font-weight: 600;">{{ session('user')['name'] }}</span>
+                            <i class="fas fa-user-circle user-avatar-fallback" style="color: #667eea; font-size: 1.2rem; display: none;"></i>
+                            <span style="color: white; font-weight: 600; font-size: 0.9rem;">
+                                {{ session('user')['name'] }}
+                            </span>
                         </div>
-                        <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
-                            @csrf
-                            <button type="submit" class="btn btn-outline-danger btn-sm">
-                                <i class="fas fa-sign-out-alt"></i> ออก
-                            </button>
-                        </form>
-                    </div>
+                    </li>
+                    
+                    <!-- Logout Button -->
+                  <li class="nav-item">
+    <a class="nav-link" href="{{ route('logout') }}" style="color: white; font-weight: 500;">
+        <i class="fas fa-sign-out-alt"></i> ออก
+    </a>
+</li>
+                @else
+                    <!-- Login Button -->
+                    <li class="nav-item">
+                        <a href="{{ route('google.login') }}" class="btn btn-sm btn-primary-custom" style="color: white; font-weight: 600; padding: 8px 16px; border-radius: 6px;">
+                            <i class="fab fa-google"></i> เข้าสู่ระบบ
+                        </a>
+                    </li>
                 @endif
-            </div>
+            </ul>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="container">
+    <div class="container-custom">
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">
@@ -306,7 +304,7 @@
                         <a href="{{ route('leaves.edit', $leave) }}" class="btn btn-warning text-white">
                             <i class="fas fa-edit"></i> แก้ไข
                         </a>
-                        <form method="POST" action="{{ route('leaves.destroy', $leave) }}" style="display: inline;" onsubmit="return confirm('ยืนยันการลบ?');">
+                        <form method="POST" action="{{ route('leaves.destroy', $leave) }}" style="display: flex; align-items: center;" onsubmit="return confirm('ยืนยันการลบ?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">

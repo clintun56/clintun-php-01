@@ -9,53 +9,59 @@
          @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
-        <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <!-- Navigation Bar Standard Template -->
+        <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgba(26, 26, 46, 0.98); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);">
             <div class="container">
-                <a class="navbar-brand" href="#" style="color: black; font-weight: 700;"><i class="fas fa-code"></i> Clin tun
-                    <span class="db-status-indicator {{ $dbConnected ? 'connected' : 'disconnected' }}" title="{{ $dbConnected ? 'Database Connected' : 'Database Disconnected' }}"></span>
+                <!-- Brand -->
+                <a class="navbar-brand" href="/" style="color: white; font-weight: 700; font-size: 1.3rem;">
+                    <i class="fas fa-code"></i> Clin tun
                 </a>
                 
-              
-                
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#skills">ทักษะ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#services">บริการ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">ติดต่อ</a></li>
+                <!-- Menu -->
+                <ul class="navbar-nav ms-auto" style="gap: 1rem;">
+                    <li class="nav-item"><a class="nav-link" href="/" style="color: white; font-weight: 500;">หน้าแรก</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#skills" style="color: white; font-weight: 500;">ทักษะ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#services" style="color: white; font-weight: 500;">บริการ</a></li>
+                    
+                    @if (session('user'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('leaves.index') }}" style="color: white; font-weight: 500;">
+                                <i class="fas fa-file-alt"></i> ระบบลา
+                            </a>
+                        </li>
                         
-                        @if (session('user'))
-                            <li class="nav-item"><a class="nav-link" href="{{ route('leaves.index') }}"><i class="fas fa-file-alt"></i> ระบบลา</a></li>
-                            
-                            <li class="nav-item" style="margin-left: 20px; display: flex; align-items: center; gap: 15px;">
-                                <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(240, 147, 251, 0.15) 100%); padding: 8px 16px; border-radius: 20px; border: 1.5px solid rgba(102, 126, 234, 0.3); transition: all 0.3s ease;">
-                                    <img 
-                                        id="userAvatar"
-                                        src="{{ session('user')['avatar'] }}" 
-                                        alt="{{ session('user')['name'] }}" 
-                                        style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #667eea; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);"
-                                        onerror="this.style.display='none'; document.getElementById('userAvatarFallback').style.display='flex';"
-                                    >
-                                    <i id="userAvatarFallback" class="fas fa-user-circle" style="color: #667eea; font-size: 1.2rem; display: none;"></i>
-                                    <span style="color: #1a1a2e; font-weight: 600; font-size: 0.9rem;">
-                                        {{ session('user')['name'] }}
-                                    </span>
-                                </div>
-                                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-outline-light" style="border: 2px solid rgba(255,255,255,0.5); transition: all 0.3s ease; font-weight: 600; padding: 6px 14px;">
-                                        <i class="fas fa-sign-out-alt"></i> ออก
-                                    </button>
-                                </form>
-                            </li>
-                        @else
-                            <li class="nav-item" style="margin-left: 20px;">
-                                <a href="{{ route('google.login') }}" class="btn btn-sm btn-primary-custom" style="color: white;">
-                                    <i class="fab fa-google"></i> เข้าสู่ระบบด้วย Google
-                                </a>
-                            </li>
-                        @endif
-                    </ul>
-                
+                        <!-- User Avatar Card -->
+                        <li class="nav-item">
+                            <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(240, 147, 251, 0.15) 100%); padding: 8px 16px; border-radius: 20px; border: 1px solid rgba(102, 126, 234, 0.3);">
+                                <img 
+                                    class="user-avatar"
+                                    src="{{ session('user')['avatar'] }}" 
+                                    alt="{{ session('user')['name'] }}" 
+                                    style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #667eea; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"
+                                >
+                                <i class="fas fa-user-circle user-avatar-fallback" style="color: #667eea; font-size: 1.2rem; display: none;"></i>
+                                <span style="color: white; font-weight: 600; font-size: 0.9rem;">
+                                    {{ session('user')['name'] }}
+                                </span>
+                            </div>
+                        </li>
+                        
+                        <!-- Logout Button -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('logout') }}" style="color: white; font-weight: 500;">
+                                <i class="fas fa-sign-out-alt"></i> ออก
+                            </a>
+                        </li>
+                    @else
+                        <!-- Login Button -->
+                        <li class="nav-item">
+                            <a href="{{ route('google.login') }}" class="btn btn-sm btn-primary-custom" style="color: white; font-weight: 600; padding: 8px 16px; border-radius: 6px;">
+                                <i class="fab fa-google"></i> เข้าสู่ระบบ
+                            </a>
+                        </li>
+                    @endif
+                </ul>
             </div>
         </nav>
 

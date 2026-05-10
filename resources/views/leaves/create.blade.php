@@ -6,7 +6,7 @@
     <title>ขอลา - Clin tun</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="{{ asset('css/portfolio.css') }}" rel="stylesheet">
+          @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         .form-container {
             max-width: 600px;
@@ -51,36 +51,59 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <!-- Navigation Bar Standard Template -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: rgba(26, 26, 46, 0.98); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);">
         <div class="container">
-            <a class="navbar-brand" href="/" style="color: black; font-weight: 700;">
-                <i class="fas fa-code" style="color: black;"></i> Clin tun
+            <!-- Brand -->
+            <a class="navbar-brand" href="/" style="color: white; font-weight: 700; font-size: 1.3rem;">
+                <i class="fas fa-code"></i> Clin tun
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="/">หน้าแรก</a></li>
-                    @if (session('user'))
-                        <li class="nav-item"><a class="nav-link" href="{{ route('leaves.index') }}">ระบบลา</a></li>
-                        <li class="nav-item" style="margin-left: 20px;">
-                            <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(240, 147, 251, 0.15) 100%); padding: 8px 16px; border-radius: 20px;">
-                                <img 
-                                    id="userAvatarCreate"
-                                    src="{{ session('user')['avatar'] }}" 
-                                    alt="{{ session('user')['name'] }}" 
-                                    style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #667eea;"
-                                    onerror="this.style.display='none'; document.getElementById('userAvatarFallbackCreate').style.display='inline';"
-                                >
-                                <i id="userAvatarFallbackCreate" class="fas fa-user-circle" style="color: #667eea; display: none;"></i>
-                                <span style="color: white; font-weight: 600;">{{ session('user')['name'] }}</span>
-                            </div>
-                        </li>
-                    @endif
-                </ul>
-            </div>
+            
+            <!-- Menu -->
+            <ul class="navbar-nav ms-auto" style="gap: 1rem;">
+                <li class="nav-item"><a class="nav-link" href="/" style="color: white; font-weight: 500;">หน้าแรก</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#skills" style="color: white; font-weight: 500;">ทักษะ</a></li>
+                <li class="nav-item"><a class="nav-link" href="/#services" style="color: white; font-weight: 500;">บริการ</a></li>
+                
+                @if (session('user'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('leaves.index') }}" style="color: white; font-weight: 500;">
+                            <i class="fas fa-file-alt"></i> ระบบลา
+                        </a>
+                    </li>
+                    
+                    <!-- User Avatar Card -->
+                    <li class="nav-item">
+                        <div style="display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(240, 147, 251, 0.15) 100%); padding: 8px 16px; border-radius: 20px; border: 1px solid rgba(102, 126, 234, 0.3);">
+                            <img 
+                                class="user-avatar"
+                                src="{{ session('user')['avatar'] }}" 
+                                alt="{{ session('user')['name'] }}" 
+                                style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #667eea; box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"
+                            >
+                            <i class="fas fa-user-circle user-avatar-fallback" style="color: #667eea; font-size: 1.2rem; display: none;"></i>
+                            <span style="color: white; font-weight: 600; font-size: 0.9rem;">
+                                {{ session('user')['name'] }}
+                            </span>
+                        </div>
+                    </li>
+                    
+                    <!-- Logout Button -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}" style="color: white; font-weight: 500;">
+                            <i class="fas fa-sign-out-alt"></i> ออก
+                        </a>
+                    </li>
+                @else
+                    <!-- Login Button -->
+                    <li class="nav-item">
+                        <a href="{{ route('google.login') }}" class="btn btn-sm btn-primary-custom" style="color: white; font-weight: 600; padding: 8px 16px; border-radius: 6px;">
+                            <i class="fab fa-google"></i> เข้าสู่ระบบ
+                        </a>
+                    </li>
+                @endif
+            </ul>
         </div>
     </nav>
 

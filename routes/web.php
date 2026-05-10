@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::resource('leaves', LeaveController::class, ['parameters' => ['leaves' => 'leave']]);
 Route::get('/leaves/{leave}/pdf', [LeaveController::class, 'downloadPdf'])->name('leaves.pdf');
