@@ -36,4 +36,7 @@ RUN apk add --no-cache nginx
 ENV WEBROOT=/var/www/html/public
 EXPOSE 80
 
-CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
+COPY entrypoint.sh /var/www/html/entrypoint.sh
+RUN chmod +x /var/www/html/entrypoint.sh
+
+CMD ["/var/www/html/entrypoint.sh"]
