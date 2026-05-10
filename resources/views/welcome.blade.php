@@ -15,10 +15,9 @@
                 <a class="navbar-brand" href="#" style="color: black; font-weight: 700;"><i class="fas fa-code"></i> Clin tun
                     <span class="db-status-indicator {{ $dbConnected ? 'connected' : 'disconnected' }}" title="{{ $dbConnected ? 'Database Connected' : 'Database Disconnected' }}"></span>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
+                
+              
+                
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="#skills">ทักษะ</a></li>
                         <li class="nav-item"><a class="nav-link" href="#services">บริการ</a></li>
@@ -56,7 +55,7 @@
                             </li>
                         @endif
                     </ul>
-                </div>
+                
             </div>
         </nav>
 
