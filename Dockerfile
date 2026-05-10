@@ -31,7 +31,7 @@ RUN chown -R www-data:www-data /var/www/html && \
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-RUN apt-get install -y nginx
+RUN apk add --no-cache nginx
 
 ENV WEBROOT=/var/www/html/public
 EXPOSE 80
