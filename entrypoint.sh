@@ -5,6 +5,11 @@ echo "Starting Laravel application..."
 
 cd /var/www/html
 
+# Build frontend assets
+echo "Building assets..."
+npm install 2>&1 || true
+npm run build 2>&1 || true
+
 # Run migrations
 echo "Running database migrations..."
 php artisan migrate --force 2>&1 || true
@@ -13,7 +18,7 @@ php artisan migrate --force 2>&1 || true
 echo "Caching configuration..."
 php artisan config:cache 2>&1 || true
 
-# Cache routes  
+# Cache routes
 echo "Caching routes..."
 php artisan route:cache 2>&1 || true
 
